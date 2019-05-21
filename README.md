@@ -5,7 +5,7 @@ Auto-mower Application for square surfaces.
 
 
 # Run application
-TODO
+ `mvn exec:java -Dexec.mainClass="MowerApp"`  
 
 ## Execute tests
 `mvn clean test`

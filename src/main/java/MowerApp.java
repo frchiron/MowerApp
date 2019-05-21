@@ -33,7 +33,6 @@ public class MowerApp {
             mower.executeInstructions(instructionsPerMower.get(index));
             System.out.println(mower.display());
         }
-
     }
 
     public static void main(String args[]) throws IOException {
