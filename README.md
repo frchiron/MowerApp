@@ -2,11 +2,12 @@
 Auto-mower Application for square surfaces.
 
 ## Description
-###Goal
+
+### Goal
 
 Build a program that implement the following mower’s specification.
 
-###The tasks
+### The tasks
 The company X wants to develop an auto-mower for square surfaces.
 
 The mower can be programmed to go throughout the whole surface. Mower's position is
