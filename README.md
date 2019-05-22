@@ -1,4 +1,4 @@
-# MowerApp
+# com.kata.mower.application.MowerApp
 Auto-mower Application for square surfaces.
 
 ## Description
@@ -10,7 +10,7 @@ Build a program that implement the following mower’s specification.
 ### The tasks
 The company X wants to develop an auto-mower for square surfaces.
 
-The mower can be programmed to go throughout the whole surface. Mower's position is
+The mower can be programmed to go throughout the whole surface. com.kata.mower.domain.Mower's position is
 represented by coordinates (X,Y) and a characters indicate the orientation according to cardinal notations
 (N,E,W,S).
 
@@ -45,17 +45,17 @@ performed its series of instructions.
 When a mower has finished, it gives the final position and orientation.
 
 # Run application with Maven
- `mvn exec:java -Dexec.mainClass="MowerApp <mySampleFile>"`  
+ `mvn exec:java -Dexec.mainClass="com.kata.mower.application.MowerApp"   -Dexec.args="<mySampleFile>"`  
 
 Examples
 
  - simple sample file
  
- `mvn exec:java -Dexec.mainClass="MowerApp" -Dexec.args="src/test/resources/sample.txt"`  
+ `mvn exec:java -Dexec.mainClass="com.kata.mower.application.MowerApp" -Dexec.args="src/test/resources/sample.txt"`  
  
 - sample file with collisions between mowers
 
- `mvn exec:java -Dexec.mainClass="MowerApp" -Dexec.args="src/test/resources/sampleWithCollisions.txt"`  
+ `mvn exec:java -Dexec.mainClass="com.kata.mower.application.MowerApp" -Dexec.args="src/test/resources/sampleWithCollisions.txt"`  
 
  
 ## Execute tests

@@ -1,5 +1,9 @@
+package com.kata.mower.domain;
+
 import java.util.Arrays;
 import java.util.Objects;
+
+import static com.kata.mower.domain.Orientation.*;
 
 public class Mower {
     private Grown grown;
@@ -21,7 +25,7 @@ public class Mower {
             throw new IllegalArgumentException("mower must start inside the grown");
         }
         grown.addBusyPosition(initialPosition);
-        return new Mower(initialPosition, Orientation.fromString(initialOrientation), grown);
+        return new Mower(initialPosition, fromString(initialOrientation), grown);
     }
 
     public Position getCurrentPosition() {

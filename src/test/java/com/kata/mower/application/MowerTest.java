@@ -1,3 +1,9 @@
+package com.kata.mower.application;
+
+import com.kata.mower.domain.Grown;
+import com.kata.mower.domain.Mower;
+import com.kata.mower.domain.Orientation;
+import com.kata.mower.domain.Position;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -112,7 +118,7 @@ public class MowerTest {
     public void should_stay_at_position_given_mower_at_growwn_bounds_and_try_to_move_forward(){
         //given
         Position initialPosition = Position.of(0, 5);
-        Mower mower = Mower.of(initialPosition, "N",Grown.of(5,5));
+        Mower mower = Mower.of(initialPosition, "N", Grown.of(5,5));
 
         // when
         mower.executeSingleInstruction("F");

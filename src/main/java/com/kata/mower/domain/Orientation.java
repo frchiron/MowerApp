@@ -1,3 +1,5 @@
+package com.kata.mower.domain;
+
 public enum Orientation {
     EAST("E","N","S"),
     WEST("W","S","N"),

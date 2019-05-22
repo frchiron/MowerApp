@@ -1,3 +1,5 @@
+package com.kata.mower.domain;
+
 import java.util.Objects;
 
 public class Position {
@@ -38,7 +40,7 @@ public class Position {
 
     @Override
     public String toString() {
-        return "Position{" +
+        return "com.kata.mower.domain.Position{" +
                 "x=" + x +
                 ", y=" + y +
                 '}';
