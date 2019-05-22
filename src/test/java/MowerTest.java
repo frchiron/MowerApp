@@ -1,13 +1,11 @@
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.internal.runners.statements.ExpectException;
 import org.junit.rules.ExpectedException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class MowerTest {
-
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -110,6 +108,20 @@ public class MowerTest {
         assertThat(mower.getCurrentOrientation()).isEqualTo(Orientation.EAST);
     }
 
+    @Test
+    public void should_stay_at_position_given_mower_at_growwn_bounds_and_try_to_move_forward(){
+        //given
+        Position initialPosition = Position.of(0, 5);
+        Mower mower = Mower.of(initialPosition, "N",Grown.of(5,5));
+
+        // when
+        mower.executeSingleInstruction("F");
+
+        // then
+        assertThat(mower.getCurrentPosition()).isEqualTo(Position.of(0,5));
+        assertThat(mower.getCurrentOrientation()).isEqualTo(Orientation.NORTH);
+    }
+
 
     @Test
     public void should_move_forward_south_given_F_instruction_and_south_initial_position(){
@@ -139,12 +151,37 @@ public class MowerTest {
         assertThat(mower.getCurrentOrientation()).isEqualTo(Orientation.EAST);
     }
 
+    @Test
+    public void should_return_error_given_mower_initial_position_out_of_bound_of_grown_with_x_position(){
+        //given
+        Position initialPosition = Position.of(-2, 1);
+
+        // then
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage("mower must start inside the grown");
+
+        //when
+        Mower mower = Mower.of(initialPosition, "E",Grown.of(3,5));
+    }
+
+    @Test
+    public void should_return_error_given_mower_initial_position_out_of_bound_of_grown_with_y_position(){
+        //given
+        Position initialPosition = Position.of(2, 5);
+
+        // then
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage("mower must start inside the grown");
+
+        //when
+        Mower mower = Mower.of(initialPosition, "E",Grown.of(4,4));
+    }
 
     @Test
     public void should_not_move_given_new_position_out_bound_of_grown_and_going_east(){
         //given
         Position initialPosition = Position.of(5, 3);
-        Mower mower = Mower.of(initialPosition, "E",new Grown(5,5));
+        Mower mower = Mower.of(initialPosition, "E",Grown.of(5,5));
 
         // when
         mower.executeInstructions("F");
@@ -158,7 +195,7 @@ public class MowerTest {
     public void should_not_move_given_new_position_out_bound_of_grown_and_going_south(){
         //given
         Position initialPosition = Position.of(5, 0);
-        Mower mower = Mower.of(initialPosition, "S",new Grown(5,5));
+        Mower mower = Mower.of(initialPosition, "S",Grown.of(5,5));
 
         // when
         mower.executeInstructions("F");
@@ -172,7 +209,7 @@ public class MowerTest {
     @Test
     public void should_move_two_mowers(){
         //given
-        Grown grown = new Grown(5, 5);
+        Grown grown = Grown.of(5, 5);
         Position initialPosition = Position.of(1, 2);
         Mower firstMower = Mower.of(initialPosition, "N", grown);
 
@@ -188,6 +225,28 @@ public class MowerTest {
         assertThat(secondMower.getCurrentOrientation()).isEqualTo(Orientation.EAST);
 
     }
+
+    @Test
+    public void should_move_two_mowers_given_collisions_between_mowers(){
+
+        //given
+        Grown grown = Grown.of(5, 5);
+        Position initialPosition = Position.of(1, 2);
+        Mower firstMower = Mower.of(initialPosition, "N", grown);
+        Mower secondMower = Mower.of(Position.of(1,3), "N",grown);
+
+        // when
+        firstMower.executeInstructions("F");
+        secondMower.executeInstructions("F");
+
+        // then
+        assertThat(firstMower.getCurrentPosition()).isEqualTo(Position.of(1,2));
+        assertThat(firstMower.getCurrentOrientation()).isEqualTo(Orientation.NORTH);
+        assertThat(secondMower.getCurrentPosition()).isEqualTo(Position.of(1,4));
+        assertThat(secondMower.getCurrentOrientation()).isEqualTo(Orientation.NORTH);
+
+    }
+
 
 
 }

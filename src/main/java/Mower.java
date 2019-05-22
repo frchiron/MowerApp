@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.Objects;
 
 public class Mower {
     private Grown grown;
@@ -11,12 +12,16 @@ public class Mower {
         this.grown = grown;
     }
 
-    public static Mower of(Position initialPosition, String initialOrientation){
-        return new Mower(initialPosition,Orientation.fromString(initialOrientation), new Grown(Integer.MAX_VALUE,Integer.MAX_VALUE));
+    public static Mower of(Position initialPosition, String initialOrientation) {
+        return of(initialPosition, initialOrientation, Grown.of(Integer.MAX_VALUE, Integer.MAX_VALUE));
     }
 
     public static Mower of(Position initialPosition, String initialOrientation, Grown grown) {
-        return new Mower(initialPosition,Orientation.fromString(initialOrientation),grown);
+        if (grown.isOutOfBounds(initialPosition)) {
+            throw new IllegalArgumentException("mower must start inside the grown");
+        }
+        grown.addBusyPosition(initialPosition);
+        return new Mower(initialPosition, Orientation.fromString(initialOrientation), grown);
     }
 
     public Position getCurrentPosition() {
@@ -28,48 +33,47 @@ public class Mower {
     }
 
     public void executeSingleInstruction(String instruction) {
-        if ("L".equals(instruction)) {
-            currentOrientation = turnLeft();
-        }
-        else if ("R".equals(instruction)){
-            currentOrientation = turnRight();
-        }
-        else if ("F".equals(instruction)){
-            currentPosition = moveForward();
-        }
-        else {
-            throw new IllegalArgumentException("unknown instruction");
-        }
-    }
-
-    private Position moveForward(){
-        switch(currentOrientation){
-            case NORTH: return Position.of(currentPosition.getX(),Math.min(currentPosition.getY()+1,grown.getMaxY()));
-            case EAST: return Position.of(Math.min(currentPosition.getX()+1,grown.getMaxX()),currentPosition.getY());
-            case WEST: return Position.of(Math.max(currentPosition.getX()-1,0),currentPosition.getY());
-            case SOUTH: return Position.of(currentPosition.getX(),Math.max(currentPosition.getY()-1,0));
-            default:throw new IllegalArgumentException("unknown orientation");
+        switch ((instruction)) {
+            case "L":
+                currentOrientation = currentOrientation.turnLeft();
+                break;
+            case "R":
+                currentOrientation = currentOrientation.turnRight();
+                break;
+            case "F":
+                tryToMoveForward();
+                break;
+            default:
+                throw new IllegalArgumentException("unknown instruction");
         }
     }
 
-
-    // TODO A ameliorer (a mettre dans l'enum)
-    private Orientation turnLeft() {
-        switch (currentOrientation){
-            case NORTH: return Orientation.WEST;
-            case WEST : return Orientation.SOUTH;
-            case SOUTH: return Orientation.EAST;
-            case EAST : return Orientation.NORTH;
-            default: throw new IllegalArgumentException("unknown orientation");
+    private void tryToMoveForward() {
+        Position potentialNewPosition = computePotentialNewPosition();
+        if (grown.isAvailablePosition(potentialNewPosition) && !potentialNewPosition.equals(currentPosition)) {
+            grown.addBusyPosition(potentialNewPosition);
+            grown.releasePosition(currentPosition);
+            currentPosition = potentialNewPosition;
         }
     }
-    private Orientation turnRight() {
-        switch (currentOrientation){
-            case NORTH: return Orientation.EAST;
-            case WEST : return Orientation.NORTH;
-            case SOUTH: return Orientation.WEST;
-            case EAST : return Orientation.SOUTH;
-            default: throw new IllegalArgumentException("unknown orientation");
+
+    private Position computePotentialNewPosition() {
+        Position forwardPosition = computeForwardPosition();
+        return grown.isOutOfBounds(forwardPosition) ? currentPosition : forwardPosition;
+    }
+
+    private Position computeForwardPosition() {
+        switch (currentOrientation) {
+            case NORTH:
+                return Position.of(currentPosition.getX(), currentPosition.getY() + 1);
+            case EAST:
+                return Position.of(currentPosition.getX() + 1, currentPosition.getY());
+            case WEST:
+                return Position.of(currentPosition.getX()-1, currentPosition.getY());
+            case SOUTH:
+                return Position.of(currentPosition.getX(), currentPosition.getY() - 1);
+            default:
+                throw new IllegalArgumentException("unknown orientation");
         }
     }
 
@@ -78,6 +82,21 @@ public class Mower {
     }
 
     public String display() {
-        return currentPosition.getX() + " " +currentPosition.getY()+ " " + currentOrientation.getValue();
+        return currentPosition.getX() + " " + currentPosition.getY() + " " + currentOrientation.getValue();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Mower mower = (Mower) o;
+        return grown.equals(mower.grown) &&
+                currentOrientation == mower.currentOrientation &&
+                currentPosition.equals(mower.currentPosition);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(grown, currentOrientation, currentPosition);
     }
 }
