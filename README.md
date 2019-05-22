@@ -1,4 +1,4 @@
-# com.kata.mower.application.MowerApp
+# MowerApp
 Auto-mower Application for square surfaces.
 
 ## Description
