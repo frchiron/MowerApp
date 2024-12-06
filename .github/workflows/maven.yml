@@ -37,3 +37,5 @@ jobs:
       with:
         files: |
            target/**/*.xml
+    - name: Mutation tests
+      run: mvn test-compile org.pitest:pitest-maven:mutationCoverage
