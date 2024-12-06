@@ -14,9 +14,7 @@ on:
   pull_request:
     branches: [ "master" ]
 
-permissions:
-  id-token: write
-  pages: write
+
 
 jobs:
   build:
