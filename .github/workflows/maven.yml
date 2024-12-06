@@ -32,8 +32,8 @@ jobs:
     - name: Build with Maven
       run: mvn clean install
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v2
+      uses: mikepenz/action-junit-report@v5
       if: always()
       with:
-        files: |
+        report_paths: |
           target/surefire-reports/*.xml
