@@ -17,8 +17,10 @@ public class MowerApp {
     public void runFrom(String inputFile) throws IOException {
 
         Map<Mower, String> mowersAndInstructions = extractMowersAndInstructionsFrom(inputFile);
-
+        System.out.println("==== INITAL POSITIONS ====");
+        mowersAndInstructions.forEach((mower,instructions) -> System.out.println(mower.display()));
         mowersAndInstructions.forEach((mower,instructions) -> mower.executeInstructions(instructions));
+        System.out.println("==== FINAL POSITIONS ====");
         mowersAndInstructions.forEach((mower,instructions) -> System.out.println(mower.display()));
     }
 

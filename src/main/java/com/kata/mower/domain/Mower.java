@@ -86,7 +86,9 @@ public class Mower {
     }
 
     public String display() {
-        return currentPosition.getX() + " " + currentPosition.getY() + " " + currentOrientation.getValue();
+        String mowerPosition = " ========== Mower Position ==========\n X Value ="
+        + currentPosition.getX() + " -- Y Value=" + currentPosition.getY() + " -- Orientation=" + currentOrientation.getValue()+ "\n";
+        return mowerPosition;
     }
 
     @Override
