@@ -4,12 +4,14 @@ import com.kata.mower.domain.Grown;
 import com.kata.mower.domain.Mower;
 import com.kata.mower.domain.Orientation;
 import com.kata.mower.domain.Position;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-
+@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class MowerTest {
 
 
