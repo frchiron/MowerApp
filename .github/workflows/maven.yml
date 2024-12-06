@@ -39,3 +39,13 @@ jobs:
            target/**/*.xml
     - name: Mutation tests
       run: mvn test-compile org.pitest:pitest-maven:mutationCoverage
+    - name: Setup Pages
+      uses: actions/configure-pages@v2
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v1
+      with:
+                 # Upload the coverage directory from the repository
+            path: './target/pit-reports'
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v1
